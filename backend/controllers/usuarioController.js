@@ -1,5 +1,11 @@
 import Usuario from "../models/Usuario.js"
+
+// Import de Helpers
 import generarId from "../helpers/generarId.js";
+import generarJWT from "../helpers/generarJWT.js";
+
+
+// FUNCION PARA REGISTRAR USUARIO ---------------------------
 
 // Uso async porque tengo que guardar datos en la BD, y puede tardar
 const registrar = async (req,res) => {
@@ -24,7 +30,7 @@ const registrar = async (req,res) => {
     }
 }
 
-// Función para autenticar usuarios
+// Función para autenticar usuarios----------------------
 const autenticar = async (req,res) => {
 
     const {email, password} = req.body;
@@ -49,6 +55,7 @@ const autenticar = async (req,res) => {
             _id: usuario._id,
             nombre: usuario.nombre,
             email: usuario.email,
+            token: generarJWT(usuario._ID),
         })
     }
     else{
@@ -60,4 +67,5 @@ const autenticar = async (req,res) => {
 }
 
 
-export { registrar, autenticar }
+
+export { registrar, autenticar, confirmar }
