@@ -39,9 +39,10 @@ const usuarioSchema = mongoose.Schema({
 }
 );
 
-// MIDLEWARE NÚMERO 1-----------------------------------
+// MIDLEWARE NÚMERO 1-------:
+//      Se ejecuta antes de almacenar el registro en la base de datos
 
-// Esto se ejecuta antes de almacenar el registro en la base de datos
+
 usuarioSchema.pre('save', async function(next){
 
     if(!this.isModified('password')){
@@ -54,6 +55,16 @@ usuarioSchema.pre('save', async function(next){
     this.password = await bcrypt.hash(this.password, salt)
 }
 )
+
+// MIDLEWARE NÚMERO 2-------:
+//      Comprobar contraseña valida
+
+usuarioSchema.methods.comprobarPassword = async function (passwordForm) {
+    // Esto compara un string sin hashear y uno hasheado
+    return await bcrypt.compare(passwordForm, this.password)
+}
+
+
 
 const Usuario = mongoose.model("Usuario", usuarioSchema)
 
