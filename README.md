@@ -1,4 +1,4 @@
-# Gestor de Proyectos- Stack MERN
+# Gestor de Proyectos (Stack MERN)
 
 ## Tecologías utilizadas
 
@@ -11,3 +11,5 @@
 
 
 ## Instalación
+
+### 1. Crear servidor Express

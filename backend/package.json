@@ -1,0 +1,28 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Gestor de Proyectos",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PabloT21/appGestorProyectos-MERN.git"
+  },
+  "author": "Pablo Terrone",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PabloT21/appGestorProyectos-MERN/issues"
+  },
+  "homepage": "https://github.com/PabloT21/appGestorProyectos-MERN#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^6.9.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
