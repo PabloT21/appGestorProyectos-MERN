@@ -1,5 +1,5 @@
 import Usuario from "../models/Usuario.js"
-
+import generarId from "../helpers/generarId.js";
 
 // Uso async porque tengo que guardar datos en la BD, y puede tardar
 const registrar = async (req,res) => {
@@ -15,6 +15,7 @@ const registrar = async (req,res) => {
 
     try{
         const usuario = new Usuario(req.body)
+        usuario.token = generarId();
         const usuarioAlmacenado = await usuario.save()
         res.json(usuarioAlmacenado)
     }
