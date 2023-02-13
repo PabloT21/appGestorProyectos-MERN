@@ -60,12 +60,39 @@ const autenticar = async (req,res) => {
     }
     else{
         const error = new Error('La contraseña es incorrecta')
-        return res.status(404).json({ msg: error.message})    }
+        return res.status(404).json({ msg: error.message})    
+    }
 
 
     // Comprobar si la password es correcta
 }
 
+// Función para que un usuario pueda confirmar su cuenta
+
+const confirmar = async (req,res) => {
+    
+    // EN req.params estan los parametros que envie en la URL
+    const { token } = req.params
+    const usuarioConfirmar = await Usuario.findOne({token})
+    if (!usuarioConfirmar){
+        const error = new Error('Token de confirmación invalido')
+        return res.status(404).json({ msg: error.message})    
+    }
+    try{
+        // Confirmo la cuenta en la BD
+        usuarioConfirmar.confirmado = true
+
+        // Borro el token de confirmación, es de 1 solo uso
+        usuarioConfirmar.token = ""
+        
+        await usuarioConfirmar.save()
+        res.json({msg: "Usuario confirmado correctamente"})
+    }
+    catch(error){
+        console.log(error)
+    }
+
+}
 
 
 export { registrar, autenticar, confirmar }

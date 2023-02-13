@@ -11,6 +11,6 @@ router.post('/', registrar); // Crea un nuevo usuario
 
 router.post('/login', autenticar); // Crea un nuevo usuario
 
-router.get('confirmar/:token', confirmar)
+router.all("/confirmar/:token", confirmar)
 
 export default router;
