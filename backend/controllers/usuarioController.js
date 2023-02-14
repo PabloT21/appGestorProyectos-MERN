@@ -56,7 +56,7 @@ const autenticar = async (req,res) => {
             _id: usuario._id,
             nombre: usuario.nombre,
             email: usuario.email,
-            token: generarJWT(usuario._ID),
+            token: generarJWT(usuario._id),
         })
     }
     else{
@@ -151,7 +151,11 @@ const nuevoPassword = async (req,res) => {
     }
 }
 
+const perfil = async (req,res) => {
+
+}
 
 
 
-export { registrar, autenticar, confirmar, resetPassword, comprobarToken, nuevoPassword}
+
+export { registrar, autenticar, confirmar, resetPassword, comprobarToken, nuevoPassword, perfil}
