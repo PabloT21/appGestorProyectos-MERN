@@ -49,6 +49,7 @@ const autenticar = async (req,res) => {
         return res.status(404).json({ msg: error.message})
     }
 
+    // Comprobar si la contraseña es correcta
     if (await usuario.comprobarPassword(password)){
         res.json({
             // Asi maneja mongo db los ids
@@ -62,12 +63,9 @@ const autenticar = async (req,res) => {
         const error = new Error('La contraseña es incorrecta')
         return res.status(404).json({ msg: error.message})    
     }
-
-
-    // Comprobar si la password es correcta
 }
 
-// Función para que un usuario pueda confirmar su cuenta
+// Función para que un usuario pueda confirmar su cuenta--------------------------------------
 
 const confirmar = async (req,res) => {
     
@@ -94,5 +92,66 @@ const confirmar = async (req,res) => {
 
 }
 
+// Función para RESETEAR contraseña -----------------------
 
-export { registrar, autenticar, confirmar }
+const resetPassword = async (req,res) => {
+    const { email } = req.body
+    const usuario = await Usuario.findOne({email})
+    if(!usuario){
+        const error = new Error('El usuario no existe')
+        return res.status(404).json({ msg: error.message})
+    }
+
+    // Si el usuario existe, genero un token y lo guardo, para enviarlo en el mail
+    usuario.token = generarId();
+    await usuario.save()
+    res.json({ msg: "Hemos enviado un email con las instrucciónes" })
+
+}
+
+// Función para comprobar un token de reseteo de contraseña
+
+const comprobarToken = async (req,res) => {
+    const { token } = req.params;
+
+    const tokenValido= await Usuario.findOne({ token: token });
+
+    if (tokenValido){
+        res.json({ msg: "Token válido y el Usuario existe"})
+    }
+    else{
+        const error = new Error('Token no válido')
+        return res.status(404).json({ msg: error.message})
+    }
+}
+
+// Función para cambiar la contraseña de un usuario
+
+const nuevoPassword = async (req,res) => {
+    const { token } = req.params
+    const { password } = req.body
+
+    // Compruebo si el token es valido
+    const usuario = await Usuario.findOne({ token: token });
+
+    if (usuario){
+        usuario.password = password
+        usuario.token = ""
+        try{
+            await usuario.save()
+            res.json({ msg: "Contraseña modificada correctamente"})
+        }
+        catch (error){
+            console.log(error)
+        }
+    }
+    else{
+        const error = new Error('Token no válido')
+        return res.status(404).json({ msg: error.message})
+    }
+}
+
+
+
+
+export { registrar, autenticar, confirmar, resetPassword, comprobarToken, nuevoPassword}

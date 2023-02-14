@@ -1,6 +1,6 @@
 import express from "express";
 
-import { registrar, autenticar, confirmar } from '../controllers/usuarioController.js'
+import { registrar, autenticar, confirmar, resetPassword, comprobarToken, nuevoPassword } from '../controllers/usuarioController.js'
 
 
 const router = express.Router()
@@ -9,8 +9,15 @@ const router = express.Router()
 
 router.post('/', registrar); // Crea un nuevo usuario
 
-router.post('/login', autenticar); // Crea un nuevo usuario
+router.post('/login', autenticar); // Se fija si el usuario y pass son correctas, si esta confirmado, y crea un JWT
 
-router.all("/confirmar/:token", confirmar)
+router.get("/confirmar/:token", confirmar) // Confirma una cuenta en base a el token enviado por parametro
+
+router.post("/reset-password", resetPassword) // Envia un mail para recuperar la contraseña
+router.route("/reset-password/:token")
+        .get(comprobarToken) // Sirve para validar un token de recuperación de contraseña
+        .post(nuevoPassword) // Resetea la contraseña del usuario
+
+
 
 export default router;
